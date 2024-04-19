@@ -3,15 +3,12 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .search-form {
@@ -20,14 +17,14 @@ body {
   margin-bottom: 20px;
 }
 
-.input_el {
+.search-input {
   padding: 8px;
   width: 200px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.button_el {
+.search-btn {
   padding: 8px 16px;
   background-color: #007bff;
   color: #fff;
@@ -36,40 +33,39 @@ body {
   cursor: pointer;
 }
 
-.button_el:hover {
+.search-btn:hover {
   background-color: #0056b3;
 }
 
-.gallery_box {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.gallery {
+  /* Додайте стилі для галереї тут */
+}
+
+.load-btn {
+  padding: 8px 16px;
+  margin-top: 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.load-btn:hover {
+  background-color: #0056b3;
 }
 
 .loader {
-  display: none;
-  margin: 20px auto;
-  border: 5px solid #f3f3f3; 
-  border-top: 5px solid #3498db; 
+  border: 4px solid #f3f3f3; /* Light grey */
+  border-top: 4px solid #3498db; /* Blue */
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   animation: spin 2s linear infinite;
+  margin: 20px auto;
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
-.gallery-item {
-  width: calc(25% - 20px);
-  margin: 10px;
-}
-
-.gallery-image {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-}
-
