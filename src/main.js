@@ -1,4 +1,4 @@
-import { fetchImages } from './js/pixaday-api';
+import { fetchImages } from './js/pixabay-api';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
