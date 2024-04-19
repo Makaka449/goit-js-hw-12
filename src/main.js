@@ -1,13 +1,13 @@
-import { fetchImages } from './js/pixabay-api.js';
+import { fetchImages } from './js/pixabay-api';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 import {
-  renderMarcup,
+  renderMarkup,
   showEndOfListMessage,
-  showEmptyInputMessage,
+  showEmptyInputMessage, // Перевірте правильність назви тут
   noImagesMessage,
 } from './js/render-functions.js';
 
@@ -36,7 +36,7 @@ async function onSubmit(event) {
   loadMoreBtn.style.display = 'block';
 
   if (searchWord === '') {
-    showEmptyInputMessage();
+    showEmptyInputMessage(); // Перевірте правильність назви тут
     container.innerHTML = '';
     loadMoreBtn.style.display = 'none';
     form.reset();
@@ -46,14 +46,14 @@ async function onSubmit(event) {
 
   try {
     const images = await fetchImages(searchWord, currPage).then(data => {
-      const markup = renderMarkup(data);
+      const markup = renderMarkup(data); // Перевірте правильність назви тут
       if (data.hits.length === 0) {
         noImagesMessage();
         loadMoreBtn.style.display = 'none';
         loader.style.display = 'none';
         return;
       }
-      container.insertAdjacentHTML('beforeend', markup);
+      container.insertAdjacentHTML('beforeend', markup); // Перевірте правильність назви тут
       lightbox.refresh();
       loader.style.display = 'none';
     });
@@ -67,8 +67,8 @@ async function onLoadMore() {
   currPage += 1;
   try {
     const images = await fetchImages(searchWord, currPage).then(data => {
-      const markup = renderMarkup(data);
-      container.insertAdjacentHTML('beforeend', markup);
+      const markup = renderMarkup(data); // Перевірте правильність назви тут
+      container.insertAdjacentHTML('beforeend', markup); // Перевірте правильність назви тут
       lightbox.refresh();
 
       const cardHeight = container.getBoundingClientRect().height;
