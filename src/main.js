@@ -1,15 +1,8 @@
-import { fetchImages } from './js/pixaday-api';
+import { fetchImages } from './js/pixabay-api';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-
-import {
-  renderMarcup,
-  showEndOfListMessage,
-  showEmptyInputMessage,
-  noImagesMessage,
-} from './js/render-functions.js';
 
 const lightbox = new SimpleLightbox('.gallery a', {
   nav: true,
@@ -29,61 +22,63 @@ form.addEventListener('submit', onSubmit);
 loadMoreBtn.addEventListener('click', onLoadMore);
 
 async function onSubmit(event) {
-  currPage = 1;
   event.preventDefault();
+  currPage = 1;
   container.innerHTML = '';
   searchWord = form.elements.searchWord.value.trim();
   loadMoreBtn.style.display = 'block';
 
   if (searchWord === '') {
-    showEmptyInputMessage();
-    container.innerHTML = '';
-    loadMoreBtn.style.display = 'none';
-    form.reset();
+    iziToast.error({ message: 'Please enter a search keyword' });
     return;
   }
+
   loader.style.display = 'block';
 
   try {
-    const images = await fetchImages(searchWord, currPage).then(data => {
-      const marcup = renderMarcup(data);
-      if (data.hits.length === 0) {
-        noImagesMessage();
-        loadMoreBtn.style.display = 'none';
-        loader.style.display = 'none';
-        return;
-      }
+    const images = await fetchImages(searchWord, currPage);
+    const marcup = renderMarcup(images);
+    if (images.hits.length === 0) {
+      iziToast.warning({ message: 'No images found for your search query' });
+      loadMoreBtn.style.display = 'none';
+    } else {
       container.insertAdjacentHTML('beforeend', marcup);
       lightbox.refresh();
-      loader.style.display = 'none';
-    });
+    }
   } catch (error) {
     console.error('Error:', error);
+    iziToast.error({ message: 'An error occurred while fetching images' });
+  } finally {
+    loader.style.display = 'none';
   }
+
   form.reset();
 }
 
 async function onLoadMore() {
   currPage += 1;
+  loader.style.display = 'block';
+
   try {
-    const images = await fetchImages(searchWord, currPage).then(data => {
-      const marcup = renderMarcup(data);
-      container.insertAdjacentHTML('beforeend', marcup);
-      lightbox.refresh();
+    const images = await fetchImages(searchWord, currPage);
+    const marcup = renderMarcup(images);
+    container.insertAdjacentHTML('beforeend', marcup);
+    lightbox.refresh();
 
-      const cardHeight = container.getBoundingClientRect().height;
-      window.scrollBy({
-        top: 2 * cardHeight,
-        behavior: 'smooth',
-      });
-
-      if (data.hits.length <= 14) {
-        loadMoreBtn.style.display = 'none';
-        showEndOfListMessage();
-        lightbox.refresh();
-      }
+    const cardHeight = container.getBoundingClientRect().height;
+    window.scrollBy({
+      top: 2 * cardHeight,
+      behavior: 'smooth',
     });
+
+    if (images.hits.length <= 14) {
+      loadMoreBtn.style.display = 'none';
+      iziToast.info({ message: 'End of the list' });
+      lightbox.refresh();
+    }
   } catch (error) {
     console.error('Error:', error);
+  } finally {
+    loader.style.display = 'none';
   }
 }
