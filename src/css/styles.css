@@ -45,9 +45,10 @@ body {
   margin-bottom: 20px;
 }
 
-.gallery-link {
-  display: block;
+.gallery-item:not(:first-child) {
+  width: calc(33.33% - 20px); /* Ось тут зазначаємо таку ж ширину як і для першої картки */
 }
+
 
 .gallery-image {
   width: 100%;
